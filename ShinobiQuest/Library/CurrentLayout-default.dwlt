@@ -97,7 +97,7 @@ MonoBehaviour:
   m_MinSize: {x: 240, y: 221}
   m_MaxSize: {x: 4000, y: 4021}
   vertical: 0
-  controlID: 4346
+  controlID: 139
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -119,10 +119,10 @@ MonoBehaviour:
     y: 30
     width: 1536
     height: 771
-  m_MinSize: {x: 678, y: 492}
+  m_MinSize: {x: 677, y: 492}
   m_MaxSize: {x: 14001, y: 14042}
   vertical: 0
-  controlID: 54
+  controlID: 89
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -290,10 +290,10 @@ MonoBehaviour:
     y: 0
     width: 1225
     height: 771
-  m_MinSize: {x: 403, y: 492}
+  m_MinSize: {x: 402, y: 492}
   m_MaxSize: {x: 10001, y: 14042}
   vertical: 1
-  controlID: 55
+  controlID: 90
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -315,10 +315,10 @@ MonoBehaviour:
     y: 0
     width: 1225
     height: 359
-  m_MinSize: {x: 403, y: 221}
-  m_MaxSize: {x: 8003, y: 4021}
+  m_MinSize: {x: 402, y: 221}
+  m_MaxSize: {x: 8002, y: 4021}
   vertical: 0
-  controlID: 56
+  controlID: 91
 --- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -443,20 +443,20 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Assets/PlatformerSet1
+    - Assets/Assets/shinobi/Ninja PNG/1024 pixel/Sword
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Assets/PlatformerSet1
+  - Assets/Assets/shinobi/Ninja PNG/1024 pixel/Sword
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\mathe\Documents\code\ShinobiQuest\ShinobiQuest
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: da660000
-    m_LastClickedID: 26330
-    m_ExpandedIDs: 00000000f04e00000c4f0000164f00001a4f0000da6600005c6800005e680000746a0000826a0000208500002485000000ca9a3b
+    m_SelectedIDs: 9e580000
+    m_LastClickedID: 22686
+    m_ExpandedIDs: 00000000685800006a5800006c5800006e58000070580000725800007458000076580000785800008058000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -484,7 +484,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 
+    m_ExpandedIDs: 00000000685800006a5800006c5800006e5800007058000072580000745800007658000078580000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -512,7 +512,7 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c6230000287100004071000058550000405500002c6a0000ca530000be510000
+    m_ExpandedInstanceIDs: c6230000287100004071000058550000405500002c6a0000ca530000be510000a6670000a2670000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -607,9 +607,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: f80affffa84dffffda5fffff086cffff7c7fffff5e8dffff1690ffff38b4ffff3ab4ffff82d1ffffe6faffff
+      m_SelectedIDs: 28f2ffff
+      m_LastClickedID: -3544
+      m_ExpandedIDs: 62fbffff143c0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -625,7 +625,7 @@ MonoBehaviour:
         m_IsRenaming: 0
         m_OriginalEventType: 11
         m_IsRenamingFilename: 0
-        m_ClientGUIView: {fileID: 0}
+        m_ClientGUIView: {fileID: 7}
       m_SearchString: 
     m_ExpandedScenes: []
     m_CurrenRootInstanceID: 0
@@ -669,9 +669,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 6.76649, y: -0.7173447, z: -4.6505346}
+    m_Target: {x: -0.26519886, y: 1.0656189, z: -1.0272794}
     speed: 2
-    m_Value: {x: 6.76649, y: -0.7173447, z: -4.6505346}
+    m_Value: {x: -0.26519886, y: 1.0656189, z: -1.0272794}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -721,9 +721,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 5.491117
+    m_Target: 1.3597397
     speed: 2
-    m_Value: 5.491117
+    m_Value: 1.3597397
   m_Ortho:
     m_Target: 1
     speed: 2
