@@ -1,37 +1,26 @@
-## Welcome to GitHub Pages
+# ShinobiQuest
+## Presentation
+### What is this ?
+ShinobiQuest is a 2D platformer game, based on Unity3D engine. The game will be designed for computer first, but will probably be adapted for mobile devices in a second time. Finally, a controller intergation should be released for every platform.
 
-You can use the [editor on GitHub](https://github.com/P-C-Corp/ShinobiQuest/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+### What's the scenario ?
+You are a young Shinobi, who have the privilege to be Sensei Taiyo's disciple. He tought you how to use your katana, and as a legacy of his wisdom, the power over  fire. But if your master is so famous, it's due to his legendary secret sunny sushi recipe. If the latter were to fall into the wrong hands, the whole world would be in a terrible danger.
+One day, the Yakuza's chief, Dakumun, sent his best men steal the recipe. Fortunatly, Sensei Taiyo had hidden it. So they kidnapped him instead, to make him reveal the place where it's hidden. 
+The next morning, when you open the dojo's door, you find a letter of your master, explaining you the situation and asking you to find the recipe and to rescue him.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### What about the price ?
+Well, that's a sensitive question... The project is open-source (entirely or partially, depending of the evolution), so it will obviously be free. However, developer licenses aren't aren't chip, especially for iOS and PlayStation, so the game might include advertissments. You will also have the possibility to pay a life-time purchase, by contributing to the project financement (the amount is up to you) to unlock an ad-free experience.
+Later, a shop with customization options and skins might open, with a shop.
 
-### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Take part to the project
+### What do we look for ?
+We currently search for :
+- Developers (for C# development and Unity features integration) : as many as you want, but you have to commit into the project
+- Graphists (to make textures, cinematics elements, logos, etc. : 1 or 2
+- Animator (couldn't find a better word) : 1 or 2
+- Sound designer (create a nice ambiance) : 1
+- Level designer (create attractive levels, of every step of difficulty) : 1
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/P-C-Corp/ShinobiQuest/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+### Get started
+contact @math_d91#1218 on discord, or click [here](https://discord.gg/n9f8bhPpKJ).
