@@ -48,7 +48,7 @@ MonoBehaviour:
   m_MinSize: {x: 679, y: 492}
   m_MaxSize: {x: 14002, y: 14042}
   vertical: 0
-  controlID: 70
+  controlID: 103
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -219,7 +219,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 492}
   m_MaxSize: {x: 10001, y: 14042}
   vertical: 1
-  controlID: 71
+  controlID: 104
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 221}
   m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
-  controlID: 72
+  controlID: 105
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -338,20 +338,20 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/scripts
+    - Assets/Assets/ennemies/Prefabs
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/scripts
+  - Assets/Assets/ennemies/Prefabs
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\mathe\Documents\code\ShinobiQuest\ShinobiQuest
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 04400000
-    m_LastClickedID: 16388
-    m_ExpandedIDs: 00000000ea3f0000ec3f0000ee3f0000f03f0000f23f0000f43f0000f63f0000f83f0000fa3f000000ca9a3b
+    m_SelectedIDs: 8c850000
+    m_LastClickedID: 34188
+    m_ExpandedIDs: 0000000060850000628500006485000066850000688500006a8500006c8500006e850000708500007485000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -379,7 +379,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000ea3f0000ec3f0000ee3f0000f03f0000f23f0000f43f0000f63f0000f83f0000fa3f0000
+    m_ExpandedIDs: 0000000060850000628500006485000066850000688500006a8500006c8500006e85000070850000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -502,9 +502,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 303c0000
-      m_LastClickedID: 15408
-      m_ExpandedIDs: 62fbffff2a3c0000303c0000
+      m_SelectedIDs: 2e850000
+      m_LastClickedID: 34094
+      m_ExpandedIDs: f261fffffa61ffff2667ffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -564,9 +564,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -0.96826446, y: 0.026144603, z: -1.1067592}
+    m_Target: {x: 0.26887578, y: 0.51807374, z: -0.6474776}
     speed: 2
-    m_Value: {x: -0.96826446, y: 0.026144603, z: -1.1067592}
+    m_Value: {x: 0.26887578, y: 0.51807374, z: -0.6474776}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -616,9 +616,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 1.0348177
+    m_Target: 3.6863503
     speed: 2
-    m_Value: 1.0348177
+    m_Value: 3.6863503
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -715,7 +715,7 @@ MonoBehaviour:
       y: 21
       width: 923
       height: 458
-    m_Scale: {x: 1.1398523, y: 1.1398523}
+    m_Scale: {x: 1, y: 1}
     m_Translation: {x: 461.5, y: 229}
     m_MarginLeft: 0
     m_MarginRight: 0
@@ -723,10 +723,10 @@ MonoBehaviour:
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -404.877
-      y: -200.90323
-      width: 809.754
-      height: 401.80646
+      x: -461.5
+      y: -229
+      width: 923
+      height: 458
     m_MinimalGUI: 1
   m_defaultScale: 1
   m_LastWindowPixelSize: {x: 1153.75, y: 598.75}
