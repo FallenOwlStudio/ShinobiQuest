@@ -10,12 +10,20 @@ public class PlayerMovement : MonoBehaviour
     //stats
     public float moveSpeed;
     public float jumpForce;
+    private float atkRate = 0.7f;
+    public float nextAtk = 0f;
+    public Transform sword;
+    public float swordRange = 0.6f;
+    public float dashForce;
+    public LayerMask enemylayers;
+    public float power = 20;
+    private bool stayStill = false;
 
     //forces
     public Rigidbody2D rb;
-    public bool isGrounded = false;
-    public bool isAttacking = false;
+    private bool isGrounded = false;
     private float horizontalMovement;
+    private bool dashing = false;
 
     //gestion de saut
     public Transform groundCheckLeft;
@@ -24,11 +32,12 @@ public class PlayerMovement : MonoBehaviour
 
     //autres
     private Vector3 velocity = Vector3.zero;
-    public bool isJumping = false;
+    private bool isJumping = false;
 
     //animator
     private Animator animator;
     private Transform transform;
+    public Transform dashPoint;
 
 
     // Start is called before the first frame update
@@ -43,11 +52,30 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.C) && isAttacking == false)
+        if(nextAtk <= 0)
         {
-            isAttacking = true;
-            Debug.Log("triggered");
+            if(Input.GetKeyDown(KeyCode.C))
+            {
+                stayStill = true;
+                Atk(1);
+                
+                nextAtk = atkRate;
+                
+
+            }
+            if(Input.GetKeyDown(KeyCode.V))
+            {
+                stayStill = true;
+                Atk(2);
+                dashing = true;
+                nextAtk = atkRate;
+                
+
+            }
+        }else{
+            nextAtk -= atkRate*Time.deltaTime;
         }
+        
     }
 
 
@@ -64,12 +92,9 @@ public class PlayerMovement : MonoBehaviour
             isJumping = true;
         }
 
-        if(isAttacking == true) 
-        {
-            horizontalMovement = 0f;
-        }
+        
 
-        MovePlayer(horizontalMovement);
+        if(stayStill == false){MovePlayer(horizontalMovement);}
 
     }
 
@@ -104,24 +129,40 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("isJumping", false);
         }
         
-        
-        if(isAttacking == true)
+        if(dashing == true)
         {
-            
-            animator.SetBool("isAttacking", true);
-            StartCoroutine(wait(0.35f));
-            
+            //rb.velocity = Vector3.SmoothDamp(transform.position, dashPoint.position, ref velocity, dashSpeed);
+            float timeout = 0.2f;
+            StartCoroutine(dash(timeout));
+
+            dashing = false;
         }
+
     }
 
 
-    IEnumerator wait(float time)
+    void Atk(int id)
     {
-        //yield on a new YieldInstruction that waits for 5 seconds.
-        yield return new WaitForSecondsRealtime(time);
-        isAttacking = false;
-        Debug.Log("done");
-        animator.SetBool("isAttacking", false);
+        animator.SetInteger("aktID", id);
+        animator.SetTrigger("atk"+id);
+        stayStill = false;
+        Debug.Log("started atk :"+id);
     }
+
+    IEnumerator dash(float timeout)
+    {
+        
+        yield return new WaitForSeconds(timeout);
+        Debug.Log('e');
+        //transform.position = Vector3.MoveTowards(transform.position, dashPoint.position, dashForce);
+        if(transform.localScale.x > 0) 
+        {
+            rb.AddForce(new Vector3(1, -0.001f, 0) * dashForce);
+        } else {
+            rb.AddForce(new Vector3(-1f, -0.001f, 0) * dashForce);
+        }
+        Debug.Log('d');
+    }
+
 
 }
