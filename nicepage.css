@@ -37153,10 +37153,18 @@ a.u-link.u-text-hover-grey-90:hover {
     margin-top: 6px;
   }
 
+  .u-header .u-image-1 {
+    width: 69px;
+    height: 69px;
+    margin-left: 7px;
+  }
+
   .u-header .u-text-1 {
+    font-size: 1.5rem;
+    width: 154px;
     margin-top: -50px;
-    margin-right: 45px;
-    margin-left: 70px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .u-header .u-menu-1 {
