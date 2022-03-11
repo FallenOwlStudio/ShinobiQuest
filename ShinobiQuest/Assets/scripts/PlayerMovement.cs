@@ -38,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     private Transform transform;
     public Transform dashPoint;
+    
 
 
     // Start is called before the first frame update
