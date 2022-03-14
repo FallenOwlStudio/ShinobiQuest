@@ -1,103 +1,164 @@
 ﻿using UnityEngine;
 using System;
-using System.Threading;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
     //variables
 
-    //stats
+    //santé et energie
+    public Gradient gradient;
+    public Image healthFilling;
+    public Slider healthSlider;
+    public Slider energySlider;
+    public float currentHealth;
+    private float maxHealth = 100;
+    private float maxEnergy = 100;
+    private float currentEnergy;
+
+    //déplacement
     public float moveSpeed;
     public float jumpForce;
-    private float atkRate = 0.7f;
-    public float nextAtk = 0f;
-    public Transform sword;
-    public float swordRange = 0.6f;
-    public float dashForce;
-    public LayerMask enemylayers;
-    public float power = 20;
     private bool stayStill = false;
+    private bool isJumping = false;
+    private Transform trans;
+    private Vector3 checkpoint;
 
-    //forces
+     ///////////
+    //attaque//
+   ///////////
+    //général
+    private float atkRate = 0.5f;
+    public float nextAtk = 0f;
+    public LayerMask enemylayers;
+
+    //sword 
+    public Transform atkPoint;
+    public float atkRange;
+    public float swordDamages;
+    //dash
+    public float dashForce;
+    public float dashDamages;
+    private bool dashing = false;
+    public Transform dashPoint;
+
+
+
+
+    //forces et physique
     public Rigidbody2D rb;
+    private BoxCollider2D box;
+    private CircleCollider2D circle;
     private bool isGrounded = false;
     private float horizontalMovement;
-    private bool dashing = false;
+    
 
     //gestion de saut
-    public Transform groundCheckLeft;
-    public Transform groundCheckRight;
+    public Transform groundCheck;
+    public float groundCheckArea;
+    public LayerMask tilemap;
+
 
 
     //autres
     private Vector3 velocity = Vector3.zero;
-    private bool isJumping = false;
 
     //animator
     private Animator animator;
-    private Transform transform;
-    public Transform dashPoint;
     
 
 
     // Start is called before the first frame update
     void Start()
     {
+        //attribution des components
         animator = GetComponent<Animator>();
-        transform = GetComponent<Transform>();
+        trans = GetComponent<Transform>();
+        circle = GetComponent<CircleCollider2D>();
+        box = GetComponent<BoxCollider2D>();
+        setEnergy(maxEnergy);
+        setHealth(maxHealth);
 
     }
 
-
+    //régler la santé
+    void setHealth(float health)
+    {
+        currentHealth = health;
+    }
+    //régler l'énergie
+    void setEnergy(float energy)
+    {
+        currentEnergy = energy;
+    }
 
     void Update()
     {
-        if(nextAtk <= 0)
+
+        //savoir si on saute 
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckArea, tilemap);
+        if (Input.GetButtonDown("Jump") && isGrounded == true)
         {
-            if(Input.GetKeyDown(KeyCode.C))
-            {
-                stayStill = true;
-                Atk(1);
-                
-                nextAtk = atkRate;
-                
-
-            }
-            if(Input.GetKeyDown(KeyCode.V))
-            {
-                stayStill = true;
-                Atk(2);
-                dashing = true;
-                nextAtk = atkRate;
-                
-
-            }
-        }else{
-            nextAtk -= atkRate*Time.deltaTime;
+            isJumping = true;
         }
-        
+        //savoir si on se déplace
+        horizontalMovement = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
+
+        //tester les dégâts
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            takeDamages(10f);
+        }
+
+        //système d'attaque
+        if(currentEnergy < 100)
+        {
+            //recharge de l'énergie au fil du temps
+            currentEnergy += 0.01f;
+        }
+        //ne pas dépasser la limite
+        if(currentEnergy > maxEnergy)
+        {
+            currentEnergy = maxEnergy;
+        }
+            
+        if(nextAtk <= 0)
+            {
+                if(Input.GetKeyDown(KeyCode.C))
+                {
+                    stayStill = true;
+                    Atk(1);
+                    StartCoroutine(swordAtk());
+                    nextAtk = 0.5f;
+                }
+                if(Input.GetKeyDown(KeyCode.V)&&currentEnergy >= 50)
+                {
+                    stayStill = true;
+                    Atk(2);
+                    dashing = true;
+                    nextAtk = 0.75f;
+                    currentEnergy -= 50;
+            
+                }
+            }else{
+                nextAtk -= atkRate*Time.fixedDeltaTime;
+            }
+        //mettre les barres à jour
+        energySlider.value = currentEnergy * 100f / maxEnergy;
+        healthSlider.value = currentHealth * 100f /maxHealth;
+        healthFilling.color = gradient.Evaluate(healthSlider.normalizedValue);
+
     }
 
 
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        horizontalMovement = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
-        
-        isGrounded = Physics2D.OverlapArea(groundCheckLeft.position, groundCheckRight.position);
-
-        if(Input.GetButtonDown("Jump") && isGrounded == true)
-        {
-            isJumping = true;
-        }
-
-        
-
         if(stayStill == false){MovePlayer(horizontalMovement);}
-
     }
+
+
 
     void MovePlayer(float _horizontalMovement)
     {
@@ -107,12 +168,12 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Speed", Math.Abs(rb.velocity.x));
         if(rb.velocity.x < -0.03f)
         {
-            transform.localScale = new Vector3(-0.3f, 0.3f, 1);
+            trans.localScale = new Vector3(-0.3f, 0.3f, 1);
         }
 
         if(rb.velocity.x > 0.03f)
         {
-            transform.localScale = new Vector3(0.3f, 0.3f, 1);
+            trans.localScale = new Vector3(0.3f, 0.3f, 1);
         }
 
         if(isJumping ==true)
@@ -150,20 +211,93 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("started atk :"+id);
     }
 
+    IEnumerator swordAtk()
+    {
+        yield return new WaitForSeconds(0.1f);
+        //get all enemies in atk range
+        Collider2D[] enemiesToHit = Physics2D.OverlapCircleAll(atkPoint.position, atkRange, enemylayers);
+
+        //inflict damages
+        foreach (Collider2D enemy in enemiesToHit)
+        {
+            Debug.Log("hit" + enemy.name + "damages :"+ swordDamages);
+            enemy.GetComponent<enemyScript>().takeDamage(swordDamages);
+        }
+    }
+
     IEnumerator dash(float timeout)
     {
         
         yield return new WaitForSeconds(timeout);
-        Debug.Log('e');
-        //transform.position = Vector3.MoveTowards(transform.position, dashPoint.position, dashForce);
-        if(transform.localScale.x > 0) 
+
+        //disable physical constraints
+        rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+        /*box.enabled = false;    
+        circle.enabled = false;*/
+
+
+        //get enemies in dash range
+        Collider2D[] enemiesToHit = Physics2D.OverlapAreaAll(trans.position, dashPoint.position, enemylayers);
+        
+        //operate dash
+        if(trans.localScale.x > 0) 
         {
             rb.AddForce(new Vector3(1, -0.001f, 0) * dashForce);
         } else {
             rb.AddForce(new Vector3(-1f, -0.001f, 0) * dashForce);
         }
-        Debug.Log('d');
+        //re-enable constraints after attack
+        rb.constraints = RigidbodyConstraints2D.None;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        /*box.enabled = true;
+        circle.enabled = true;*/
+
+        //hurt enemies
+        foreach(Collider2D enemy in enemiesToHit)
+        {
+            Debug.Log("hit" + enemy.name);
+            enemy.GetComponent<enemyScript>().takeDamage(dashDamages);
+        }
+    }
+    //ajuster le cercle d'attaque
+    private void OnDrawGizmosSelected()
+    {
+        if(atkPoint == null)
+        {
+            Debug.Log("No atkPoint found");
+        }
+        else
+        {
+            Gizmos.DrawWireSphere(atkPoint.position, atkRange);
+        }
+        if (groundCheck == null)
+        {
+            Debug.Log("No groundCheck found");
+        }
+        else
+        {
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckArea);
+        }
+
     }
 
+
+    //prendre des dégâts
+    void takeDamages(float damages)
+    {
+        currentHealth -= damages;
+        stayStill = true;
+        if (currentHealth <= 0)
+        {
+            Debug.Log("Joueur décédé");
+            trans.localPosition = new Vector3(trans.position.x, trans.position.y - 0.24f, trans.position.z);
+            trans.Rotate(0.0f, 0.0f,90.0f , Space.Self);
+            this.enabled = false;
+        }
+        else
+        {
+            animator.SetTrigger("hurt");
+        }
+    }
 
 }
