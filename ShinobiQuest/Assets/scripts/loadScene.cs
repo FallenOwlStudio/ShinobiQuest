@@ -42,7 +42,7 @@ public class loadScene : MonoBehaviour
         //apparitions en fondu
         fadeSystem.SetTrigger("in");
         yield return new WaitForSeconds(0.5f);
-        fillColor.color = new Color32(245, 155, 33, 255);
+        fillColor.color = new Color32(206, 65, 74, 255);
         barFade.SetTrigger("appear");
         progressFade.SetTrigger("appear");
         //attendre la fin de ces animations
@@ -61,7 +61,7 @@ public class loadScene : MonoBehaviour
             progressText.text = Convert.ToInt32(newProgress) + "%";
             ;
 
-
+            /*
             //attendre pour plus de confort visuel en fonction de l'avancement
             if (progress < progressSlider.value)
             {
@@ -70,7 +70,7 @@ public class loadScene : MonoBehaviour
             else
             {
                 yield return new WaitForSeconds(0.001f);
-            }
+            }*/
 
 
             //vérifier le progrès, charger la scène si terminé

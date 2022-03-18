@@ -27,28 +27,31 @@ public class fallingPlatform : MonoBehaviour
         
     }
 
-    void OntriggerEnter2D(Collider2D collision)
+/*    void OntriggerEnter2D(Collider2D collision)
     {
     if(collision.gameObject.tag == "deathZone")
     {
         box.enabled = false;
         this.gameObject.SetActive(false);
-        this.enabled = false;
+        //this.enabled = false;
     }
-    }
+    }*/
 
     IEnumerator Tremble()
     {
         //tremble avant de tomber
         for (int i = 0; i < 10; i++)
         {
-            transform.localPosition += new Vector3(0, 2f, 0);
+            transform.localPosition -= new Vector3(0, .02f, 0);
             yield return new WaitForSeconds(0.05f);
-            transform.localPosition -= new Vector3(0, 2f, 0);
+            transform.localPosition += new Vector3(0, .02f, 0);
             yield return new WaitForSeconds(0.05f);
         }
         //amorcer la chute
         rb.constraints = RigidbodyConstraints2D.None;
+        yield return new WaitForSeconds(.8f);
+        this.gameObject.SetActive(false);
+        yield return null;
     }
 
 }
