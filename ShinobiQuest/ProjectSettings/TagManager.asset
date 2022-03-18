@@ -5,6 +5,15 @@ TagManager:
   serializedVersion: 2
   tags:
   - deathZone
+  - tilemap
+  - hpContainer
+  - hpFill
+  - eContainer
+  - eFill
+  - statsContainer
+  - progressContainer
+  - pFill
+  - pBorder
   layers:
   - Default
   - TransparentFX
@@ -17,7 +26,7 @@ TagManager:
   - enemy
   - player
   - tilemap
-  - 
+  - ground
   - 
   - 
   - 

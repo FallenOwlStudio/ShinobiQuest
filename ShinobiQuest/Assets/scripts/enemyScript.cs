@@ -57,12 +57,11 @@ public class enemyScript : MonoBehaviour
     IEnumerator die()
     {
         animator.SetTrigger("die");
-        yield return new WaitForSeconds(1.4f);
         rb.constraints = RigidbodyConstraints2D.FreezePositionY;
         circle.enabled = false;
         box.enabled = false;
-        animator.enabled = false;
         this.enabled = false;
+        yield return null;
     }
 
 

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System;
 using UnityEngine.UI;
 using System.Collections;
@@ -9,9 +10,9 @@ public class PlayerMovement : MonoBehaviour
 
     //santé et energie
     public Gradient gradient;
-    public Image healthFilling;
-    public Slider healthSlider;
-    public Slider energySlider;
+    private Image healthFilling;
+    private Slider healthSlider;
+    private Slider energySlider;
     public float currentHealth;
     private float maxHealth = 100;
     private float maxEnergy = 100;
@@ -23,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
     private bool stayStill = false;
     private bool isJumping = false;
     private Transform trans;
-    private Vector3 checkpoint;
+
 
      ///////////
     //attaque//
@@ -42,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     public float dashDamages;
     private bool dashing = false;
     public Transform dashPoint;
-
+    public loadScene loader;
 
 
 
@@ -57,12 +58,13 @@ public class PlayerMovement : MonoBehaviour
     //gestion de saut
     public Transform groundCheck;
     public float groundCheckArea;
-    public LayerMask tilemap;
+    public LayerMask ground;
 
 
 
     //autres
     private Vector3 velocity = Vector3.zero;
+    public loadScene loadScene;
 
     //animator
     private Animator animator;
@@ -77,6 +79,9 @@ public class PlayerMovement : MonoBehaviour
         trans = GetComponent<Transform>();
         circle = GetComponent<CircleCollider2D>();
         box = GetComponent<BoxCollider2D>();
+        healthFilling = GameObject.FindGameObjectWithTag("hpFill").GetComponent<Image>();
+        healthSlider = GameObject.FindGameObjectWithTag("hpContainer").GetComponent <Slider>();
+        energySlider = GameObject.FindGameObjectWithTag("eContainer").GetComponent<Slider>();
         setEnergy(maxEnergy);
         setHealth(maxHealth);
 
@@ -97,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
     {
 
         //savoir si on saute 
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckArea, tilemap);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckArea, ground);
         if (Input.GetButtonDown("Jump") && isGrounded == true)
         {
             isJumping = true;
@@ -149,6 +154,15 @@ public class PlayerMovement : MonoBehaviour
         healthSlider.value = currentHealth * 100f /maxHealth;
         healthFilling.color = gradient.Evaluate(healthSlider.normalizedValue);
 
+        //mourir  et relancer la scène
+        if (currentHealth <= 0.01f)
+        {
+            currentHealth = 100f;
+            Debug.Log("You died");
+            trans.localPosition = new Vector3(trans.position.x, trans.position.y - 0.24f, trans.position.z);
+            trans.Rotate(0.0f, 0.0f, 90.0f, Space.Self);
+            StartCoroutine(loadScene.sceneLoader(1, SceneManager.GetActiveScene().name));
+        }
     }
 
 
@@ -205,10 +219,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Atk(int id)
     {
-        animator.SetInteger("aktID", id);
         animator.SetTrigger("atk"+id);
         stayStill = false;
-        Debug.Log("started atk :"+id);
     }
 
     IEnumerator swordAtk()
@@ -287,17 +299,8 @@ public class PlayerMovement : MonoBehaviour
     {
         currentHealth -= damages;
         stayStill = true;
-        if (currentHealth <= 0)
-        {
-            Debug.Log("Joueur décédé");
-            trans.localPosition = new Vector3(trans.position.x, trans.position.y - 0.24f, trans.position.z);
-            trans.Rotate(0.0f, 0.0f,90.0f , Space.Self);
-            this.enabled = false;
-        }
-        else
-        {
-            animator.SetTrigger("hurt");
-        }
+        
+        animator.SetTrigger("hurt");
     }
 
 }
