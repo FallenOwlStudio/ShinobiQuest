@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using System;
 using UnityEngine.UI;
 using System.Collections;
+using Cinemachine;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -24,13 +25,13 @@ public class PlayerMovement : MonoBehaviour
     private bool stayStill = false;
     private bool isJumping = false;
     private Transform trans;
-
+    public SpriteRenderer sp;
 
      ///////////
     //attaque//
    ///////////
     //général
-    private float atkRate = 0.5f;
+    public float atkRate;
     public float nextAtk = 0f;
     public LayerMask enemylayers;
 
@@ -43,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
     public float dashDamages;
     private bool dashing = false;
     public Transform dashPoint;
-    public loadScene loader;
+    private loadScene loader;
 
 
 
@@ -64,7 +65,10 @@ public class PlayerMovement : MonoBehaviour
 
     //autres
     private Vector3 velocity = Vector3.zero;
-    public loadScene loadScene;
+    private loadScene loadScene;
+    public Transform cinemachine;
+    private bool isInvicible = false;
+
 
     //animator
     private Animator animator;
@@ -82,6 +86,7 @@ public class PlayerMovement : MonoBehaviour
         healthFilling = GameObject.FindGameObjectWithTag("hpFill").GetComponent<Image>();
         healthSlider = GameObject.FindGameObjectWithTag("hpContainer").GetComponent <Slider>();
         energySlider = GameObject.FindGameObjectWithTag("eContainer").GetComponent<Slider>();
+        loader = GameObject.FindGameObjectWithTag("gameManager").GetComponent<loadScene>();
         setEnergy(maxEnergy);
         setHealth(maxHealth);
 
@@ -108,15 +113,28 @@ public class PlayerMovement : MonoBehaviour
             isJumping = true;
         }
         //savoir si on se déplace
-        horizontalMovement = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
+        if(stayStill == false)
+        {
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            horizontalMovement = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
+        }
+        else
+        {
+            horizontalMovement = 0;
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+            
+        }
+            
 
         //tester les dégâts
         if (Input.GetKeyDown(KeyCode.F))
         {
-            takeDamages(10f);
+
+            stayStill = true;
+            takeDamages(20f);
         }
 
-        //système d'attaque
+        //charge energy bar
         if(currentEnergy < 100)
         {
             //recharge de l'énergie au fil du temps
@@ -139,7 +157,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if(Input.GetKeyDown(KeyCode.V)&&currentEnergy >= 50)
                 {
-                    stayStill = true;
+                    //stayStill = true;
                     Atk(2);
                     dashing = true;
                     nextAtk = 0.75f;
@@ -154,14 +172,19 @@ public class PlayerMovement : MonoBehaviour
         healthSlider.value = currentHealth * 100f /maxHealth;
         healthFilling.color = gradient.Evaluate(healthSlider.normalizedValue);
 
-        //mourir  et relancer la scène
+        //die and restart scene
         if (currentHealth <= 0.01f)
         {
-            currentHealth = 100f;
+            currentHealth = 0.1f;
+            
             Debug.Log("You died");
-            trans.localPosition = new Vector3(trans.position.x, trans.position.y - 0.24f, trans.position.z);
-            trans.Rotate(0.0f, 0.0f, 90.0f, Space.Self);
-            StartCoroutine(loadScene.sceneLoader(1, SceneManager.GetActiveScene().name));
+            //trans.localPosition = new Vector3(trans.position.x, trans.position.y - 0.24f, trans.position.z);
+
+            animator.SetTrigger("death");
+            stayStill = true;
+
+            StartCoroutine(loader.sceneLoader(1, SceneManager.GetActiveScene().name));
+            cinemachine.position = trans.position;
         }
     }
 
@@ -169,7 +192,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(stayStill == false){MovePlayer(horizontalMovement);}
+        MovePlayer(horizontalMovement);
     }
 
 
@@ -207,7 +230,6 @@ public class PlayerMovement : MonoBehaviour
         
         if(dashing == true)
         {
-            //rb.velocity = Vector3.SmoothDamp(transform.position, dashPoint.position, ref velocity, dashSpeed);
             float timeout = 0.2f;
             StartCoroutine(dash(timeout));
 
@@ -220,7 +242,6 @@ public class PlayerMovement : MonoBehaviour
     void Atk(int id)
     {
         animator.SetTrigger("atk"+id);
-        stayStill = false;
     }
 
     IEnumerator swordAtk()
@@ -234,7 +255,11 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log("hit" + enemy.name + "damages :"+ swordDamages);
             enemy.GetComponent<enemyScript>().takeDamage(swordDamages);
+            
         }
+        yield return new WaitForSeconds(0.45f);
+        stayStill = false;
+        yield return null;
     }
 
     IEnumerator dash(float timeout)
@@ -242,10 +267,9 @@ public class PlayerMovement : MonoBehaviour
         
         yield return new WaitForSeconds(timeout);
 
-        //disable physical constraints
-        rb.constraints = RigidbodyConstraints2D.FreezePositionY;
-        /*box.enabled = false;    
-        circle.enabled = false;*/
+        //disable physics on Y axis
+        rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+
 
 
         //get enemies in dash range
@@ -259,10 +283,8 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(new Vector3(-1f, -0.001f, 0) * dashForce);
         }
         //re-enable constraints after attack
-        rb.constraints = RigidbodyConstraints2D.None;
-        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-        /*box.enabled = true;
-        circle.enabled = true;*/
+        stayStill=false;    
+        
 
         //hurt enemies
         foreach(Collider2D enemy in enemiesToHit)
@@ -295,12 +317,39 @@ public class PlayerMovement : MonoBehaviour
 
 
     //prendre des dégâts
-    void takeDamages(float damages)
+     public void takeDamages(float damages)
     {
-        currentHealth -= damages;
+        if (!isInvicible)
+        {
+            currentHealth -= damages;
         stayStill = true;
         
         animator.SetTrigger("hurt");
+        isInvicible = true;
+        StartCoroutine(Flash());
+        StartCoroutine(InvicibilityManager());
+        }
+        
+    }
+
+    public IEnumerator Flash()
+    {
+        while (isInvicible)
+        {
+            sp.color = new Color(255f, 255, 255f, 0f);
+            yield return new WaitForSeconds(0.1f);
+            sp.color = new Color(255f, 255, 255f, 255f);
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    public IEnumerator InvicibilityManager()
+    {
+        yield return new WaitForSeconds(0.5f);
+        stayStill = false;
+        yield return new WaitForSeconds(1.5f);
+        isInvicible = false;
+        yield return null;
     }
 
 }

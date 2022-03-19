@@ -20,22 +20,11 @@ public class fallingPlatform : MonoBehaviour
         if(collision.gameObject.tag == "Player")
         {
             StartCoroutine(Tremble());
-        }/*else if(collision.gameObject.tag == "tilemap"){
-            box.enabled = false;
-            this.gameObject.SetActive(false);
-            this.enabled = false;*/
+        }
         
     }
 
-/*    void OntriggerEnter2D(Collider2D collision)
-    {
-    if(collision.gameObject.tag == "deathZone")
-    {
-        box.enabled = false;
-        this.gameObject.SetActive(false);
-        //this.enabled = false;
-    }
-    }*/
+
 
     IEnumerator Tremble()
     {
@@ -49,6 +38,7 @@ public class fallingPlatform : MonoBehaviour
         }
         //amorcer la chute
         rb.constraints = RigidbodyConstraints2D.None;
+        this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
         yield return new WaitForSeconds(.8f);
         this.gameObject.SetActive(false);
         yield return null;

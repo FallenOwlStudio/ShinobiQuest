@@ -5,7 +5,7 @@ public class Spawner : MonoBehaviour
 {
     void Awake()
     {
-        placePlayer();
+        StartCoroutine(placePlayer());
     }
     public IEnumerator placePlayer()
     {

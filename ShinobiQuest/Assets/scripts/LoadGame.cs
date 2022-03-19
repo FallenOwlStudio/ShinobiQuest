@@ -14,8 +14,12 @@ public class LoadGame : MonoBehaviour
     public Animator barFade;
     public Animator textFade;
     public Animator progressFade;
+    public GameObject interfaceCanvas;
 
-
+    private void Awake()
+    {
+        interfaceCanvas.SetActive(false);
+    }
     void Start()
     {
         logoFade.SetTrigger("appear");
@@ -69,6 +73,7 @@ public class LoadGame : MonoBehaviour
             {
                 //lancer la scène
                 Debug.Log("done");
+                interfaceCanvas.SetActive(true);
                 operation.allowSceneActivation = true;
             }
 
