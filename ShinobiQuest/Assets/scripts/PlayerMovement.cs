@@ -46,7 +46,10 @@ public class PlayerMovement : MonoBehaviour
     public Transform dashPoint;
     private loadScene loader;
 
-
+    //buttons interractions
+    public bool jumpButton = false;
+    public bool atkButton = false;
+    public bool dashButton = false;
 
     //forces et physique
     public Rigidbody2D rb;
@@ -72,8 +75,10 @@ public class PlayerMovement : MonoBehaviour
 
     //animator
     private Animator animator;
-    
 
+    //mobile support
+    private bool isMobile;
+    public Joystick joystick;
 
     // Start is called before the first frame update
     void Start()
@@ -89,6 +94,16 @@ public class PlayerMovement : MonoBehaviour
         loader = GameObject.FindGameObjectWithTag("gameManager").GetComponent<loadScene>();
         setEnergy(maxEnergy);
         setHealth(maxHealth);
+        if(SystemInfo.deviceType == DeviceType.Handheld)
+        {
+            isMobile = true;
+            joystick.gameObject.SetActive(true);
+        }
+        else
+        {
+            isMobile = false;
+            joystick.gameObject.SetActive(false);
+        }
 
     }
 
@@ -108,15 +123,36 @@ public class PlayerMovement : MonoBehaviour
 
         //savoir si on saute 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckArea, ground);
-        if (Input.GetButtonDown("Jump") && isGrounded == true)
+        if ((Input.GetButtonDown("Jump") || jumpButton) && isGrounded == true)
         {
+            jumpButton = false;
             isJumping = true;
         }
+        
+
         //savoir si on se déplace
         if(stayStill == false)
         {
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-            horizontalMovement = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
+
+            if (isMobile)
+            {
+                if(joystick.Horizontal <= -0.3)
+                {
+                    horizontalMovement = -1f * moveSpeed * Time.deltaTime;  
+                }else if (joystick.Horizontal >= 0.3)
+                {
+                    horizontalMovement = 1f * moveSpeed * Time.deltaTime;
+                }
+                else
+                {
+                    horizontalMovement = 0f;
+                }
+            }
+            else
+            {
+                horizontalMovement = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
+            }
         }
         else
         {
@@ -148,16 +184,18 @@ public class PlayerMovement : MonoBehaviour
             
         if(nextAtk <= 0)
             {
-                if(Input.GetKeyDown(KeyCode.C))
+                if(Input.GetKeyDown(KeyCode.C) || atkButton)
                 {
-                    stayStill = true;
+                atkButton = false; 
+                stayStill = true;
                     Atk(1);
                     StartCoroutine(swordAtk());
                     nextAtk = 0.5f;
                 }
-                if(Input.GetKeyDown(KeyCode.V)&&currentEnergy >= 50)
+                if((Input.GetKeyDown(KeyCode.V) || dashButton)&&currentEnergy >= 50)
                 {
                     //stayStill = true;
+                    dashButton = false;
                     Atk(2);
                     dashing = true;
                     nextAtk = 0.75f;
