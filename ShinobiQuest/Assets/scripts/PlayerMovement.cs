@@ -292,7 +292,7 @@ public class PlayerMovement : MonoBehaviour
         foreach (Collider2D enemy in enemiesToHit)
         {
             Debug.Log("hit" + enemy.name + "damages :"+ swordDamages);
-            enemy.GetComponent<enemyScript>().takeDamage(swordDamages);
+            enemy.GetComponent<enemyScript>().Damage(swordDamages);
             
         }
         yield return new WaitForSeconds(0.45f);
@@ -328,7 +328,7 @@ public class PlayerMovement : MonoBehaviour
         foreach(Collider2D enemy in enemiesToHit)
         {
             Debug.Log("hit" + enemy.name);
-            enemy.GetComponent<enemyScript>().takeDamage(dashDamages);
+            enemy.GetComponent<enemyScript>().Damage(dashDamages);
         }
     }
     //ajuster le cercle d'attaque

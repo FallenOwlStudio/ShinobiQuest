@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class enemyScript : MonoBehaviour
+public class enemyScript : Entity
 {
 
     //gérer la vie 
@@ -29,42 +29,29 @@ public class enemyScript : MonoBehaviour
         circle = GetComponent<CircleCollider2D>();
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        //ne fais rien de spécial pour l'instant
-        return;
     }
 
-    public void takeDamage(float damages)
+    public override void Damage(float damage)
     {
-        currentHealth -= damages;
-        //mourrir si la santé atteint 0
-        if (currentHealth <= 0)
+        if ((damage - Resistance) < 0) return;
+        Health -= (damage-Resistance);
+        animator.SetTrigger("hurt");
+        if (Health <= 0)
         {
-            StartCoroutine(die());
-
+            Die();
         }
-        else//animation de blessure si les dégâts ne sont pas mortels
-        {
-            animator.SetTrigger("hurt");
-        }
-
     }
 
-    
-    //aniamtion de mort et désactivation
-    IEnumerator die()
+
+    public override void Die()
     {
         animator.SetTrigger("die");
         rb.constraints = RigidbodyConstraints2D.FreezePositionY;
         circle.enabled = false;
         box.enabled = false;
         this.enabled = false;
-        yield return null;
     }
-
-
-    
-
 }
