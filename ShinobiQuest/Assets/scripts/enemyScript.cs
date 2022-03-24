@@ -8,7 +8,8 @@ public class enemyScript : Entity
     //gérer la vie 
     public float currentHealth;
     public float maxHealth = 100;
-    
+    public int remainingtime = 5;
+    int t;
 
     //animator
     private Animator animator;
@@ -21,6 +22,7 @@ public class enemyScript : Entity
     // Start is called before the first frame update
     void Start()
     {   //set Health
+        t = remainingtime;
         currentHealth = maxHealth;
         //attribution des components
         animator = GetComponent<Animator>();
@@ -44,14 +46,25 @@ public class enemyScript : Entity
             Die();
         }
     }
-
-
+    public IEnumerator dissolution()
+    {
+        if (remainingtime <= 0)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            yield return new WaitForSeconds(1);
+            remainingtime -= 1;
+            StartCoroutine("dissolution");
+        }
+    }
     public override void Die()
     {
         animator.SetTrigger("die");
         rb.constraints = RigidbodyConstraints2D.FreezePositionY;
         circle.enabled = false;
         box.enabled = false;
-        this.enabled = false;
+        StartCoroutine("dissolution");
     }
 }

@@ -31,6 +31,7 @@ public class fallingPlatform : MonoBehaviour
         //tremble avant de tomber
         for (int i = 0; i < 10; i++)
         {
+            
             transform.localPosition -= new Vector3(0, .02f, 0);
             yield return new WaitForSeconds(0.05f);
             transform.localPosition += new Vector3(0, .02f, 0);
@@ -38,9 +39,9 @@ public class fallingPlatform : MonoBehaviour
         }
         //amorcer la chute
         rb.constraints = RigidbodyConstraints2D.None;
-        this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+        GetComponent<BoxCollider2D>().enabled = false;
         yield return new WaitForSeconds(.8f);
-        this.gameObject.SetActive(false);
+        Destroy(gameObject);
         yield return null;
     }
 
