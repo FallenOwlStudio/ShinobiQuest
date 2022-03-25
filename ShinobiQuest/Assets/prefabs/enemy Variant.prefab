@@ -333,4 +333,3 @@ MonoBehaviour:
   Resistance: 5
   currentHealth: 0
   maxHealth: 100
-  remainingtime: 10

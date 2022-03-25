@@ -291,6 +291,7 @@ public class PlayerMovement : MonoBehaviour
         //inflict damages
         foreach (Collider2D enemy in enemiesToHit)
         {
+            Debug.Log("hit" + enemy.name + "damages :"+ swordDamages);
             enemy.GetComponent<enemyScript>().Damage(swordDamages);
             
         }
