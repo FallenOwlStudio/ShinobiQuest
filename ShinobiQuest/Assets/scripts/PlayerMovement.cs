@@ -94,9 +94,11 @@ public class PlayerMovement : MonoBehaviour
         loader = GameObject.FindGameObjectWithTag("gameManager").GetComponent<loadScene>();
         setEnergy(maxEnergy);
         setHealth(maxHealth);
-        if(SystemInfo.deviceType == DeviceType.Handheld)
+        Debug.Log("Device Type:" + SystemInfo.deviceType);
+        if(SystemInfo.deviceType != DeviceType.Handheld)
         {
             isMobile = true;
+            Debug.Log("mobile device");
             joystick.gameObject.SetActive(true);
         }
         else
