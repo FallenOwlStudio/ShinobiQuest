@@ -59,10 +59,7 @@ ShinobiQuest/sysinfo.txt
 icon.exe
 
 # Builds
-ShinobiQuest/*.apk
-ShinobiQuest/*.aab
-ShinobiQuest/*.unitypackage
-ShinobiQuest/*.app
+Builds/
 
 # Crashlytics generated file
 ShinobiQuest/crashlytics-build.properties
