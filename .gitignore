@@ -1,7 +1,6 @@
-# This .gitignore file should be placed at the root of your Unity project directory
-#
-# Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
-#
+# =============== #
+# Unity generated #
+# =============== #
 ShinobiQuest/[Ll]ibrary/
 ShinobiQuest/[Tt]emp/
 ShinobiQuest/[Oo]bj/
@@ -69,8 +68,8 @@ ShinobiQuest/*.app
 ShinobiQuest/crashlytics-build.properties
 
 # Packed Addressables
-/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+ShinobiQuest/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
 
 # Temporary auto-generated Android Assets
-/[Aa]ssets/[Ss]treamingAssets/aa.meta
-/[Aa]ssets/[Ss]treamingAssets/aa/*
+ShinobiQuest/[Aa]ssets/[Ss]treamingAssets/aa.meta
+ShinobiQuest/[Aa]ssets/[Ss]treamingAssets/aa/*

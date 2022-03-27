@@ -83,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //attribution des components
+        //components attributon
         animator = GetComponent<Animator>();
         trans = GetComponent<Transform>();
         circle = GetComponent<CircleCollider2D>();
@@ -94,8 +94,10 @@ public class PlayerMovement : MonoBehaviour
         loader = GameObject.FindGameObjectWithTag("gameManager").GetComponent<loadScene>();
         setEnergy(maxEnergy);
         setHealth(maxHealth);
+
+        //get device type
         Debug.Log("Device Type:" + SystemInfo.deviceType);
-        if(SystemInfo.deviceType != DeviceType.Handheld)
+        if(SystemInfo.deviceType == DeviceType.Handheld)
         {
             isMobile = true;
             Debug.Log("mobile device");
