@@ -20,6 +20,7 @@ TagManager:
   - fadeScreen
   - ptext
   - gameManager
+  - mobileControls
   layers:
   - Default
   - TransparentFX

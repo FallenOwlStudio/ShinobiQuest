@@ -79,11 +79,12 @@ public class PlayerMovement : MonoBehaviour
     //mobile support
     private bool isMobile;
     public Joystick joystick;
+    public Canvas mobileControls;
 
     // Start is called before the first frame update
     void Start()
     {
-        //attribution des components
+        //components attribution
         animator = GetComponent<Animator>();
         trans = GetComponent<Transform>();
         circle = GetComponent<CircleCollider2D>();
@@ -94,17 +95,19 @@ public class PlayerMovement : MonoBehaviour
         loader = GameObject.FindGameObjectWithTag("gameManager").GetComponent<loadScene>();
         setEnergy(maxEnergy);
         setHealth(maxHealth);
+
+        //enable or not mobile input system according to the current device
         Debug.Log("Device Type:" + SystemInfo.deviceType);
-        if(SystemInfo.deviceType != DeviceType.Handheld)
+        if(SystemInfo.deviceType == DeviceType.Handheld)
         {
             isMobile = true;
             Debug.Log("mobile device");
-            joystick.gameObject.SetActive(true);
+            mobileControls.enabled = true;
         }
         else
         {
             isMobile = false;
-            joystick.gameObject.SetActive(false);
+            mobileControls.enabled = false;
         }
 
     }
@@ -222,6 +225,7 @@ public class PlayerMovement : MonoBehaviour
 
             animator.SetTrigger("death");
             stayStill = true;
+            mobileControls.enabled = false;
 
             StartCoroutine(loader.sceneLoader(1, SceneManager.GetActiveScene().name));
             cinemachine.position = trans.position;
@@ -392,4 +396,18 @@ public class PlayerMovement : MonoBehaviour
         yield return null;
     }
 
+
+    //buttons functions for mobile
+    public void jumpButtonTriggered()
+    {
+        isJumping = true;
+    }
+    public void atkButtonTriggered()
+    {
+        atkButton = true;
+    }
+    public void dashButtonTriggered()
+    {
+        dashButton = true;
+    }
 }
