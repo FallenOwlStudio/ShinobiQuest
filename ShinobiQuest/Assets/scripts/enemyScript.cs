@@ -7,7 +7,7 @@ public class enemyScript : MonoBehaviour
 
     //gérer la vie 
     public float currentHealth;
-    public float maxHealth = 100;
+    public float maxHealth;
     
 
     //animator
@@ -15,8 +15,7 @@ public class enemyScript : MonoBehaviour
   
     //physics
     private Rigidbody2D rb;
-    private BoxCollider2D box;
-    private CircleCollider2D circle;
+    private CapsuleCollider2D hitbox;
 
     // Start is called before the first frame update
     void Start()
@@ -25,8 +24,7 @@ public class enemyScript : MonoBehaviour
         //attribution des components
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();  
-        box = GetComponent<BoxCollider2D>();
-        circle = GetComponent<CircleCollider2D>();
+        hitbox = GetComponent<CapsuleCollider2D>();
     }
 
     // Update is called once per frame
@@ -39,13 +37,13 @@ public class enemyScript : MonoBehaviour
     public void takeDamage(float damages)
     {
         currentHealth -= damages;
-        //mourrir si la santé atteint 0
-        if (currentHealth <= 0)
+        //die if health reaches 0
+        if (currentHealth <= 0f)
         {
             StartCoroutine(die());
 
         }
-        else//animation de blessure si les dégâts ne sont pas mortels
+        else//hurt animation if injuries are not deadly
         {
             animator.SetTrigger("hurt");
         }
@@ -58,8 +56,7 @@ public class enemyScript : MonoBehaviour
     {
         animator.SetTrigger("die");
         rb.constraints = RigidbodyConstraints2D.FreezePositionY;
-        circle.enabled = false;
-        box.enabled = false;
+        hitbox.enabled = false;
         this.enabled = false;
         yield return null;
     }

@@ -65,6 +65,9 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask ground;
 
 
+    //camera setup
+    public Animator vcams;
+    public float yvel;
 
     //autres
     private Vector3 velocity = Vector3.zero;
@@ -112,12 +115,12 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    //régler la santé
+    //set health
     void setHealth(float health)
     {
         currentHealth = health;
     }
-    //régler l'énergie
+    //set energy
     void setEnergy(float energy)
     {
         currentEnergy = energy;
@@ -126,7 +129,19 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
 
-        //savoir si on saute 
+        /*
+        //upate camera according to the Y velocity
+        yvel = rb.velocity.y;
+        if(rb.velocity.y < -0.03f)
+        {
+            vcams.SetTrigger("falling");
+        }
+        else
+        {
+            vcams.SetTrigger("default");
+        }*/
+
+        //know if player asked to jump
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckArea, ground);
         if ((Input.GetButtonDown("Jump") || jumpButton) && isGrounded == true)
         {
@@ -135,17 +150,17 @@ public class PlayerMovement : MonoBehaviour
         }
         
 
-        //savoir si on se déplace
+        //get movement inputs
         if(stayStill == false)
         {
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
             if (isMobile)
             {
-                if(joystick.Horizontal <= -0.3)
+                if(joystick.Horizontal <= -0.2)
                 {
                     horizontalMovement = -1f * moveSpeed * Time.deltaTime;  
-                }else if (joystick.Horizontal >= 0.3)
+                }else if (joystick.Horizontal >= 0.2)
                 {
                     horizontalMovement = 1f * moveSpeed * Time.deltaTime;
                 }
