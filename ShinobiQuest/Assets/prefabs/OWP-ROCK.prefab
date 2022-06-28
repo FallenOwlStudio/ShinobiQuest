@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2324510233316490859}
   - component: {fileID: 2324510233316490868}
   - component: {fileID: 2324510233316490869}
+  - component: {fileID: 1933757667872056578}
   m_Layer: 11
   m_Name: OWP-ROCK
   m_TagString: Untagged
@@ -129,3 +130,15 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!114 &1933757667872056578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2324510233316490870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42693b0f3ce7b51418bd24aabd8cb42c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

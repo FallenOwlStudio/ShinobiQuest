@@ -28,8 +28,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - loot
+  - interractable
   - enemy
   - player
   - tilemap
@@ -60,6 +60,9 @@ TagManager:
     locked: 0
   - name: enemy
     uniqueID: 3240166009
+    locked: 0
+  - name: loot
+    uniqueID: 3507963635
     locked: 0
   - name: player
     uniqueID: 970509981

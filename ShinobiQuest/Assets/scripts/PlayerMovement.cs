@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using System;
 using UnityEngine.UI;
 using System.Collections;
-using Cinemachine;
+using System.Threading;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
     public bool atkButton = false;
     public bool dashButton = false;
 
-    //forces et physique
+    //forces and physics
     public Rigidbody2D rb;
     private BoxCollider2D box;
     private CircleCollider2D circle;
@@ -126,22 +126,49 @@ public class PlayerMovement : MonoBehaviour
         currentEnergy = energy;
     }
 
+    public IEnumerator fillEnergy(int energy)
+    {
+        
+
+        Thread filler = new Thread(() =>{
+            Debug.Log(energy);
+            for (int i = 0; i < energy; i++)
+            {
+                currentEnergy += 1;
+                Debug.Log("current energy : " + currentEnergy);
+                if (currentEnergy > maxEnergy)
+                {
+                    currentEnergy = maxEnergy;
+                }
+                Thread.Sleep(50);
+            }
+            
+        });
+        
+        filler.Start();
+        yield return new WaitForSeconds(2);
+        filler.Abort();
+        yield return null;
+    }
+
+    void addEnergy(int energy)
+    {
+        Debug.Log(energy);
+        for (int i = 0; i < energy; i++)
+        {
+            currentEnergy += 1;
+            Debug.Log("current energy : " + currentEnergy);
+            if (currentEnergy > maxEnergy)
+            {
+                currentEnergy = maxEnergy;
+            }
+            Thread.Sleep(100);
+        }
+    }
+
     void Update()
     {
 
-        /*
-        //upate camera according to the Y velocity
-        yvel = rb.velocity.y;
-        if(rb.velocity.y < -0.03f)
-        {
-            vcams.SetTrigger("falling");
-        }
-        else
-        {
-            vcams.SetTrigger("default");
-        }*/
-
-        //know if player asked to jump
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckArea, ground);
         if ((Input.GetButtonDown("Jump") || jumpButton) && isGrounded == true)
         {
@@ -193,10 +220,10 @@ public class PlayerMovement : MonoBehaviour
         //charge energy bar
         if(currentEnergy < 100)
         {
-            //recharge de l'énergie au fil du temps
+            //refill energy along time
             currentEnergy += 0.01f;
         }
-        //ne pas dépasser la limite
+        //not overpass energy limit
         if(currentEnergy > maxEnergy)
         {
             currentEnergy = maxEnergy;
@@ -214,7 +241,6 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if((Input.GetKeyDown(KeyCode.V) || dashButton)&&currentEnergy >= 50)
                 {
-                    //stayStill = true;
                     dashButton = false;
                     Atk(2);
                     dashing = true;
@@ -225,23 +251,21 @@ public class PlayerMovement : MonoBehaviour
             }else{
                 nextAtk -= atkRate*Time.fixedDeltaTime;
             }
-        //mettre les barres à jour
+        //update bars
         energySlider.value = currentEnergy * 100f / maxEnergy;
         healthSlider.value = currentHealth * 100f /maxHealth;
         healthFilling.color = gradient.Evaluate(healthSlider.normalizedValue);
 
         //die and restart scene
-        if (currentHealth <= 0.01f)
+        if (currentHealth <= 0f)
         {
             currentHealth = 0.1f;
             
             Debug.Log("You died");
-            //trans.localPosition = new Vector3(trans.position.x, trans.position.y - 0.24f, trans.position.z);
-
             animator.SetTrigger("death");
             stayStill = true;
             mobileControls.enabled = false;
-
+            stayStill = true;
             StartCoroutine(loader.sceneLoader(1, SceneManager.GetActiveScene().name));
             cinemachine.position = trans.position;
         }
@@ -352,7 +376,7 @@ public class PlayerMovement : MonoBehaviour
             enemy.GetComponent<enemyScript>().takeDamage(dashDamages);
         }
     }
-    //ajuster le cercle d'attaque
+    //see gizmo elements
     private void OnDrawGizmosSelected()
     {
         if(atkPoint == null)
